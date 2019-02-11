@@ -11,6 +11,10 @@ namespace ComicViewer.Core
 
         public int NumberOfPages { get; set; }        
         
+        public int Height { get; set; }
+
+        public int Width { get; set; }
+
         public FileInfo GetFileInfo()
         {
             return new FileInfo(this.Path);
