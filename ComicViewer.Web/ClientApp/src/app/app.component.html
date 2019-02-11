@@ -1,6 +1,8 @@
 <mat-toolbar>
   <app-search (onSelected)="onSelected($event)"></app-search>
 </mat-toolbar>
-<!--<cdk-virtual-scroll-viewport [itemSize]="800" class="example-viewport">-->
-  <img *ngFor="let page of pages" [src]="page" width="900" />
-<!--</cdk-virtual-scroll-viewport>-->
+<cdk-virtual-scroll-viewport itemSize="2190" class="example-viewport" [style.height]="screenHeight">
+  <div *cdkVirtualFor="let page of pagesObserver | async" style="text-align:center;">
+    <img [src]="page" class="page-image" style="margin-left: auto; margin-right: auto;"/>
+   </div>
+</cdk-virtual-scroll-viewport>

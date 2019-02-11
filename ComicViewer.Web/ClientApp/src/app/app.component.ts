@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, HostListener } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -6,13 +7,27 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrls: ['./app.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
-  title = 'app';
-  book = {};
-  pages = [];
+export class AppComponent implements OnInit{
+    title = 'app';
+    book = {};
+    pagesObserver = new BehaviorSubject<any[]>([]);
+    screenHeight: string;
+    screenWidth: number;
+  
+  ngOnInit() {
 
-  onSelected($event: any) {
-    this.book = $event;
-    this.pages = Array.from({ length: $event.numberOfPages-1 }).map((_, i) => `api/Image/${$event.id}/${i+1}`);
+    this.onResize({ target: window });
   }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event?) {
+      this.screenHeight = (event.target.innerHeight - 66) + "px";
+      this.screenWidth = event.target.innerWidth;
+    }
+
+    onSelected($event: any) {
+      var pages = Array.from({ length: $event.numberOfPages - 1 }).map((_, i) => `api/Image/${$event.id}/${i + 1}`);
+      this.book = $event;
+      this.pagesObserver.next(pages);
+    }
 }
