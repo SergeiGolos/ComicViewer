@@ -1,0 +1,22 @@
+<!--<div>
+  <div>
+    <input (keyup)="onKey($event)"  (keyup.enter)="onEnter($event)" />
+  </div>
+  <ul>
+    <li *ngFor="let book of books" (click)="onSelect(book)">
+      <a target="_blank" href="api/Image/{{book.id}}/1"><img src="api/Image/{{book.id}}/1?height=60&width=40"  height="60"/><span>{{book.name}}</span></a>
+    </li>
+  </ul>
+</div>-->
+<form class="search-form">
+  <mat-form-field style="width: 650px;">
+    <input matInput placeholder="Search by Name" aria-label="search" [matAutocomplete]="auto" [formControl]="searchCtrl">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+      <mat-option *ngFor="let book of searchEvent | async" [value]="book" (onSelectionChange)="onSearchSelected($event)">
+        <img class="comic-thumb" aria-hidden src="api/Image/{{book.id}}/1" height="60">
+        <span>{{book.name}}</span> |
+        <small>Population: {{book.NumberOfPages}}</small>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

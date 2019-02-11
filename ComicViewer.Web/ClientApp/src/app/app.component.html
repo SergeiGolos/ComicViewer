@@ -1,7 +1,6 @@
-<div class='container-fluid'>
-  <div class='row'>   
-    <div class='col-sm-9 body-content'>
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</div>
+<mat-toolbar>
+  <app-search (onSelected)="onSelected($event)"></app-search>
+</mat-toolbar>
+<!--<cdk-virtual-scroll-viewport [itemSize]="800" class="example-viewport">-->
+  <img *ngFor="let page of pages" [src]="page" width="900" />
+<!--</cdk-virtual-scroll-viewport>-->
