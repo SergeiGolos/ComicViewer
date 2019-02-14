@@ -1,10 +1,15 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace ComicViewer.Core
 {
-	public class ComicBookFile
+	public class ComicBookListing
 	{
+		[Key]
+		public string Id { get; set; }
+
 		public string Name { get; set; }
 
 		public string Path { get; set; }
@@ -17,9 +22,8 @@ namespace ComicViewer.Core
 
 		public byte[] Thumbnail { get; set; }
 
-		public FileInfo GetFileInfo()
-		{
-			return new FileInfo(this.Path);
-		}
+		public DateTime Created { get; set; }
+
+		public DateTime Updated { get; set; }
 	}
 }
