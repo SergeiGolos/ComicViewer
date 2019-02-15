@@ -8,13 +8,13 @@ namespace ComicViewer.Core
 {
     public class ComicBookFactory : IComicBookFactory
     {
-        private string[] imageExtentions = new[] { "jpg", "png" };
+        private string[] imageExtentions = new[] { "jpg", "png"};
 
         public T InArchive<T>(FileInfo file, Func<IArchive, IEnumerable<IArchiveEntry>, T> loaderFn)
         {        
             using (var archive = ArchiveFactory.Open(file.FullName))
             {
-                var pages = archive.Entries.Where(m => imageExtentions.Contains(m.Key.Substring(m.Key.Length - 3)))
+                var pages = archive.Entries.Where(m => imageExtentions.Contains(m.Key.Substring(m.Key.Length - 3).ToLower()))
                     .OrderBy(m => m.Key);
                 return loaderFn(archive, pages);
             }
