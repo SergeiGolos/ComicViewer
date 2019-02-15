@@ -13,6 +13,8 @@ export class AppComponent implements OnInit{
     pagesObserver = new BehaviorSubject<any[]>([]);
     screenHeight: string;
     screenWidth: number;
+    pageHeight = 1600;
+    pageWidth = null;
   
   ngOnInit() {
 
