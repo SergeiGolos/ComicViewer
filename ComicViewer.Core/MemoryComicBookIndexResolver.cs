@@ -37,8 +37,9 @@ namespace ComicViewer.Core
 
         public IComicBookIndexResolver Index()
         {
+            var extentions = new[] { "*.cbr", "*.cbz", "*.rar", "*.zip" };
             var rootPath = new DirectoryInfo(config.ComicRepositoryPath);
-            var files = rootPath.GetFiles("*.cbr", SearchOption.AllDirectories);
+            var files = extentions.SelectMany(extension => rootPath.GetFiles(extension, SearchOption.AllDirectories));
             foreach (var file in files)
             {
                 var key = file.GetHashCode().ToString("X");
