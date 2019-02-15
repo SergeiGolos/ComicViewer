@@ -1,0 +1,6 @@
+﻿In ComicViewer.Web at command line prompt:
+
+Run 'dotnet ef migrations add InitialCreate' to scaffold a migration and create the initial set of tables for the model.
+Run 'dotnet ef database update' to apply the new migration to the database. This command creates the database before applying migrations.
+
+Comics.db is now created in ComicViewer.Web
