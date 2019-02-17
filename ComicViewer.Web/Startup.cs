@@ -1,17 +1,20 @@
-using ComicViewer.Core;
-using ComicViewer.Core.Configuration;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-
 namespace ComicViewer.Web
 {
-	public static class AppConfiguration
+    using System;
+
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.SpaServices.AngularCli;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+
+    using ComicViewer.Core;
+    using ComicViewer.Core.Configuration;
+    using ComicViewer.Core.Indexers;
+
+    public static class AppConfiguration
 	{
 		public static T Load<T>(this IConfiguration Configuration, string section) where T : new()
 		{
@@ -33,35 +36,48 @@ namespace ComicViewer.Web
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            var config = Configuration.Load<ComicViewerConfiguration>("ComicViewer");
+
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddSpaStaticFiles(configuration =>
 			{
 				configuration.RootPath = "ClientApp/dist";
 			});
 
-			services.AddSingleton(Configuration.Load<ComicViewerConfiguration>("ComicViewer"));
-			services.AddSingleton<IImageProcessor, DummyImageProcessor>();
-			services.AddSingleton<IComicBookFactory, ComicBookFactory>();
-			services.AddSingleton<IComicBookIndexResolver, MemoryComicBookIndexResolver>();
-			services.AddScoped<IComicBookQuery, ComicBookQuery>();
-			services.AddScoped<IComicBookCommand, ComicBookCommand>();
-			services.AddDbContext<ComicBookContext>(options =>
-							   options.UseSqlite(Configuration.GetSection("ConnectionString").ToString(), builder => builder.MigrationsAssembly(typeof(Startup).Assembly.FullName)
-								   ));
+            services.AddSingleton(config);
+            services.AddDbContext<ComicBookContext>(options =>
+                               options.UseSqlite(Configuration.GetSection("ConnectionString").ToString(), builder => builder.MigrationsAssembly(typeof(Startup).Assembly.FullName)));
+
+            services.AddTransient<IComicInterigator, IdInterigator>();
+            services.AddTransient<IComicInterigator, ImageInterigator>();
+            
+			services.AddTransient<IImageProcessor, ImageSharpProcessor>();
+			services.AddTransient<IComicBookFactory, ComicBookFactory>();
+
+            if (string.IsNullOrEmpty(config.DatabasePath))
+            {
+                services.AddSingleton(p=>new InMemoryIndexer(p.GetService<ComicViewerConfiguration>(), p.GetService<IComicBookFactory>()).Run() as InMemoryIndexer);
+                services.AddTransient<IComicBookResolver, MemoryComicBookResolver>();
+            }
+            else
+            {                
+                services.AddTransient<IComicBookResolver, StoreComicBookResolver>();
+            }
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IServiceProvider serviceProvider, IHostingEnvironment env)
 		{
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Error");
-				app.UseHsts();
-			}
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
@@ -85,9 +101,7 @@ namespace ComicViewer.Web
 				{
 					spa.UseAngularCliServer(npmScript: "start");
 				}
-			});
-
-			serviceProvider.GetService<IComicBookIndexResolver>().Index();
+			});			
 		}
 	}
 }

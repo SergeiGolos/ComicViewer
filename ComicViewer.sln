@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicViewer.Web", "ComicViewer.Web\ComicViewer.Web.csproj", "{9F3A3C07-3B04-467E-B86C-2CD693EB887D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicViewer.Web", "ComicViewer.Web\ComicViewer.Web.csproj", "{9F3A3C07-3B04-467E-B86C-2CD693EB887D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicViewer.Core", "ComicViewer.Core\ComicViewer.Core.csproj", "{5F4732F3-E424-4BA4-BB26-F18A7CEC2C99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComicViewer.Core", "ComicViewer.Core\ComicViewer.Core.csproj", "{5F4732F3-E424-4BA4-BB26-F18A7CEC2C99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComicViewer.Indexer", "ComicViewer.Indexer\ComicViewer.Indexer.csproj", "{79CD920A-9852-44BE-BF1D-9296EE013CC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5F4732F3-E424-4BA4-BB26-F18A7CEC2C99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F4732F3-E424-4BA4-BB26-F18A7CEC2C99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F4732F3-E424-4BA4-BB26-F18A7CEC2C99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79CD920A-9852-44BE-BF1D-9296EE013CC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79CD920A-9852-44BE-BF1D-9296EE013CC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79CD920A-9852-44BE-BF1D-9296EE013CC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79CD920A-9852-44BE-BF1D-9296EE013CC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

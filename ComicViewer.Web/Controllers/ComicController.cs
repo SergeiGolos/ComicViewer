@@ -7,14 +7,14 @@ namespace ComicViewer.Web.Controllers
     [Route("api/[controller]")]
     public class ComicController : Controller
     {
-        private readonly IComicBookIndexResolver resolver;
+        private readonly IComicBookResolver resolver;
 
-        public ComicController(IComicBookIndexResolver resolver)
+        public ComicController(IComicBookResolver resolver)
         {
             this.resolver = resolver;
         }
 
         [HttpGet("{search}")]
-        public IEnumerable<ComicBookFileInfo> Get(string search) => this.resolver.FindByName(search);
+        public IEnumerable<ComicBookFile> Get(string search) => this.resolver.FindByName(search);
     }    
 }

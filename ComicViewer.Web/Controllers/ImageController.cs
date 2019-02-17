@@ -1,18 +1,19 @@
-﻿using System;
-using System.Threading.Tasks;
-using ComicViewer.Core;
-using Microsoft.AspNetCore.Mvc;
-
+﻿
 namespace ComicViewer.Web.Controllers
 {
+    using System.IO;
+    using Microsoft.AspNetCore.Mvc;
+
+    using ComicViewer.Core;    
+
     [Route("api/[controller]")]
     public class ImageController : Controller
     {
-        private readonly IComicBookIndexResolver indexResolver;
+        private readonly IComicBookResolver indexResolver;
         private readonly IComicBookFactory factory;
         private readonly IImageProcessor processor;
 
-        public ImageController(IComicBookIndexResolver indexResolver, IComicBookFactory factory, IImageProcessor processor)
+        public ImageController(IComicBookResolver indexResolver, IComicBookFactory factory, IImageProcessor processor)
         {
             this.indexResolver = indexResolver;
             this.factory = factory;
@@ -24,7 +25,7 @@ namespace ComicViewer.Web.Controllers
         {
             var book = this.indexResolver.FindById(id);
             if (book == null) return null;
-            var image = factory.LoadPage(book.GetFileInfo(), pageNumber);
+            var image = factory.LoadPage(new FileInfo(book.Path), pageNumber);
             if (image == null) { return new StatusCodeResult(404); }
             if (height.HasValue && width.HasValue)
             {

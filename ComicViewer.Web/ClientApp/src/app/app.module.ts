@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component';
+import { AppComponent, Base64ImagePipe } from './app.component';
 import { SearchComponent  } from './search/search.component';
 import { PageViewComponent } from './page-view/page-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,7 +15,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
   declarations: [
     AppComponent,    
     SearchComponent,        
-    PageViewComponent
+    PageViewComponent,
+    Base64ImagePipe
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -1,11 +1,11 @@
-﻿using System.IO;
-
-namespace ComicViewer.Core
+﻿namespace ComicViewer.Core
 {
+    using System.IO;
 
     public interface IComicBookFactory
     {
         ComicBookFile LoadFile(FileInfo file);
-        Stream LoadPage(FileInfo file, int pageIndex);
+        MemoryStream LoadPage(FileInfo file, int pageIndex);
+        MemoryStream LoadPage(FileInfo file, int pageIndex, int? height, int? width);
     }
 }
