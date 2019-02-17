@@ -12,10 +12,13 @@
   <mat-form-field style="width: 650px;">
     <input matInput placeholder="Search by Name" aria-label="search" [matAutocomplete]="auto" [formControl]="searchCtrl">
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-      <mat-option *ngFor="let book of searchEvent | async" [value]="book" (onSelectionChange)="onSearchSelected($event)" style="height:80px !important;">
-        <img class="comic-thumb" aria-hidden [src]="book.thumbnail | base64image" height="80">
+      <mat-option *ngFor="let book of searchEvent | async"
+                  [value]="book"
+                  (onSelectionChange)="onSearchSelected($event)"
+                  style="height:80px !important;">
+        <img class="comic-thumb" [src]="book.thumbnail | base64image" height="80">
         <span>{{book.name}}</span> |
-        <small>Population: {{book.length}}</small>
+        <small>Length: {{book.length}}</small>
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>

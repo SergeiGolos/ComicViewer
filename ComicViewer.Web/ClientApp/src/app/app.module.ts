@@ -8,8 +8,7 @@ import { AppComponent, Base64ImagePipe } from './app.component';
 import { SearchComponent  } from './search/search.component';
 import { PageViewComponent } from './page-view/page-view.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatInputModule, MatAutocompleteModule, MatButtonModule, MatFormFieldModule } from '@angular/material';
-import { ScrollingModule } from '@angular/cdk/scrolling';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
@@ -24,12 +23,7 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatToolbarModule,
-    ScrollingModule ,
-    MatInputModule,
-    MatAutocompleteModule,
-    MatFormFieldModule
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
