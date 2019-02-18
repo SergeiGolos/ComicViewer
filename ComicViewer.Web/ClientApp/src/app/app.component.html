@@ -1,8 +1,7 @@
 <mat-toolbar>
   <mat-toolbar-row>
     <span>ComicBook Browser</span>
-    <app-search (onSelected)="onSelected($event)"></app-search>
-    <button (click)="pageSize($event);">Toggle</button>
+    <app-search class="search-bar" (onSelected)="onSelected($event)"></app-search>
   </mat-toolbar-row>
 </mat-toolbar>
 <cdk-virtual-scroll-viewport [itemSize]="displayHeight" class="example-viewport" [style.height]="screenHeight">

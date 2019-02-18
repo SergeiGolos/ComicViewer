@@ -13,8 +13,10 @@ namespace ComicViewer.Web.Controllers
         {
             this.resolver = resolver;
         }
+        [HttpGet("{id}")]
+        public ComicBookFile Get(string id) => this.resolver.FindById(id);
 
-        [HttpGet("{search}")]
-        public IEnumerable<ComicBookFile> Get(string search) => this.resolver.FindByName(search);
+        [HttpGet("find/{search}")]
+        public IEnumerable<ComicBookFile> Find(string search) => this.resolver.FindByName(search);
     }    
 }

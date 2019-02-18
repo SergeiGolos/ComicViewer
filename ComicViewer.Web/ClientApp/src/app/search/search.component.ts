@@ -22,7 +22,7 @@ export class SearchComponent implements OnInit{
       .pipe(
         filter(n => n.length > 2),
         debounceTime(300),
-        switchMap(n => http.get("/api/Comic/" + n))
+        switchMap(n => http.get("/api/Comic/Find/" + n))
       );
   }
 

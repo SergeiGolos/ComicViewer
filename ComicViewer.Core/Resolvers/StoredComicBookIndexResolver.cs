@@ -25,7 +25,7 @@
         public IEnumerable<ComicBookFile> FindByName(string search)
         {
             return this.context.Files
-                .Where(n => n.Name.IndexOf(search, StringComparison.CurrentCultureIgnoreCase) != -1);
+                .Where(n => n.Name.ToUpper().Contains(search.ToUpper()));
         }
     }
 }

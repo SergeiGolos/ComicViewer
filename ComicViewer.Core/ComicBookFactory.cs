@@ -39,14 +39,18 @@
         public ComicBookFile LoadFile(FileInfo file)
         {
             return InArchive(file, (archive, pages) => {
-                if (archive.IsSolid) { return null; } // TODO add processing to solid files.
-                var comic = new ComicBookFile();
-
-                foreach (var interigator in this.interigators)
+                ComicBookFile comic = null;
+                try
                 {
-                    interigator.Apply(comic, file, archive, pages);
-                }
+                    if (archive.IsSolid) { return null; } // TODO add processing to solid files.
 
+                    comic = new ComicBookFile();
+                    foreach (var interigator in this.interigators)
+                    {
+                        interigator.Apply(comic, file, archive, pages);
+                    }
+                }
+                catch { }
                 return comic;
             });            
         } 
