@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
         if (this.bookId == id) { return; }
 
         this.bookId = id;
-        httpClient.get('/api/Comic/' + id).subscribe(x => this.onSelected(x);
+        httpClient.get('/api/Comic/' + id).subscribe(x => this.onSelected(x));
       } else {
         var pages: string[] = [];
         this.bookId = null;

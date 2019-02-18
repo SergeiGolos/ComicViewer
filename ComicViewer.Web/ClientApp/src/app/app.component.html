@@ -1,8 +1,7 @@
-<mat-toolbar>
-  <mat-toolbar-row>
-    <span>ComicBook Browser</span>
-    <app-search class="search-bar" (onSelected)="onSelected($event)"></app-search>
-  </mat-toolbar-row>
+<mat-toolbar color="primary">  
+  <span class="title-text" style=" flex: 1 1 auto;">ComicBook Reader</span>
+
+  <app-search class="search-bar" (onSelected)="onSelected($event)"></app-search>  
 </mat-toolbar>
 <cdk-virtual-scroll-viewport [itemSize]="displayHeight" class="example-viewport" [style.height]="screenHeight">
   <div *cdkVirtualFor="let page of pagesObserver | async" style="text-align:center;">
