@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ComicViewer.Core;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,6 @@ namespace ComicViewer.Web.Controllers
         public ComicBookFile Get(string id) => this.resolver.FindById(id);
 
         [HttpGet("find/{search}")]
-        public IEnumerable<ComicBookFile> Find(string search) => this.resolver.FindByName(search);
+        public IEnumerable<ComicBookFile> Find(string search) => this.resolver.FindByName(search).Take(20);
     }    
 }
