@@ -2,6 +2,8 @@
 {
     using ComicViewer.Core.Configuration;
     using System;
+    using System.IO;
+    using System.Linq;
 
     public class StoreIndexer : BaseComicIndexer, IComicIndexer
     {
@@ -12,6 +14,16 @@
         {
             this.config = config;
             this.context = context;
+        }
+
+        public override bool NotAlreadyDefined(FileInfo file)
+        {
+            var entry = context.Files.Where(x => x.Path == file.FullName).FirstOrDefault();
+            if (entry == null) return true;
+
+            var reletivePath = entry.Path.Replace(config.ComicRepositoryPath, string.Empty);
+            Console.WriteLine("Skip - " + entry.Id + ": " + reletivePath);
+            return false;
         }
 
         public override void Store(ComicBookFile file)

@@ -23,10 +23,16 @@
 
         public abstract void Store(ComicBookFile file);
 
+        public virtual bool NotAlreadyDefined(FileInfo file)
+        {
+            return true;
+        }
+
         public virtual IComicIndexer Run()
         {
             var comics = this.extensions
                 .SelectMany(ext => path.GetFiles(ext, SearchOption.AllDirectories))
+                .Where(NotAlreadyDefined)
                 .Select(file => this.factory.LoadFile(file))
                 .Where(file => file != null);
 
