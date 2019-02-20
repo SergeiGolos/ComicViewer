@@ -16,7 +16,7 @@ namespace ComicViewer.Core.Interigators
         
         public bool ApplyIssue(ComicBookFile comic, MatchCollection matches)
         {
-            comic.Volume = matches[0].Value;
+            comic.Issue = matches[0].Value;
             return true;
         }
     }

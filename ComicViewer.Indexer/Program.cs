@@ -26,7 +26,7 @@ namespace ComicViewer.Indexer
                        var imgProcessor = new ImageSharpProcessor();
                        var factory = new ComicBookFactory(imgProcessor, new IComicInterigator[] {
                            new IdInterigator(),
-                           // new ImageInterigator(config, imgProcessor),
+                           new ImageInterigator(config, imgProcessor),
                            new VolumeInterigator(),
                            new IssueInterigator(),
                            new DateInterigator(),

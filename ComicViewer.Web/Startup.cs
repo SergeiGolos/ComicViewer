@@ -37,7 +37,7 @@ namespace ComicViewer.Web
 		public void ConfigureServices(IServiceCollection services)
 		{
             var config = Configuration.Load<ComicViewerConfiguration>("ComicViewer");
-
+            var connectionString = Configuration.GetSection("ConnectionString").ToString();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			services.AddSpaStaticFiles(configuration =>
@@ -46,18 +46,20 @@ namespace ComicViewer.Web
 			});
 
             services.AddSingleton(config);
-            services.AddDbContext<ComicBookContext>(options =>
-                               options.UseSqlite(Configuration.GetSection("ConnectionString").ToString(), builder => builder.MigrationsAssembly(typeof(Startup).Assembly.FullName)));
-
-            services.AddTransient<IComicInterigator, IdInterigator>();
-            services.AddTransient<IComicInterigator, ImageInterigator>();
+            services.AddDbContext<ComicBookContext>(options => 
+                    options.UseSqlite(connectionString, builder => 
+                            builder.MigrationsAssembly(typeof(Startup).Assembly.FullName)));
             
 			services.AddTransient<IImageProcessor, ImageSharpProcessor>();
 			services.AddTransient<IComicBookFactory, ComicBookFactory>();
 
             if (string.IsNullOrEmpty(config.DatabasePath))
             {
-                services.AddSingleton(p=>new InMemoryIndexer(p.GetService<ComicViewerConfiguration>(), p.GetService<IComicBookFactory>()).Run() as InMemoryIndexer);
+                services.AddSingleton(p =>
+                {
+                    var factory = p.GetService<IComicBookFactory>();
+                    return new InMemoryIndexer(config, factory).Run() as InMemoryIndexer;
+                });
                 services.AddTransient<IComicBookResolver, MemoryComicBookResolver>();
             }
             else

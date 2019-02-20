@@ -12,7 +12,8 @@ namespace ComicViewer.Core.Interigators
         public VolumeInterigator()
         {
             SetUp(c=> c.comic.Volume = string.Empty);
-            Test("v[0-9]+", c => c.comic.OriginalName, ApplyVolume);
+            Test(@"v[0-9]+", c => c.comic.OriginalName, ApplyVolume);
+            Test(@"vol\.[\s*][0-9]+", c => c.comic.OriginalName, ApplyVolume);
         }
 
         public bool ApplyVolume(ComicBookFile comic, MatchCollection matches)

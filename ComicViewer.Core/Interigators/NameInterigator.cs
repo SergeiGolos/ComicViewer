@@ -11,9 +11,11 @@ namespace ComicViewer.Core.Interigators
         {
             SetUp(c => c.comic.Name = c.comic.OriginalName);
 
-            Test(@"\b[0-9]{2,3,4,5,6}\b", c => c.comic.Name, ApplyRemoveFound);
-            Test(@"v[0-9]+", c => c.comic.Name, ApplyRemoveFound);
-            Test(@"\([\w|\s|\-|\+]*\)", c => c.comic.Name, ApplyRemoveFound);
+            Test(@"\[[\w|\s|\-|\+|\&|\.]*\]", c => c.comic.Name, ApplyRemoveFound);
+            Test(@"\([\w|\s|\-|\+|\&|\.]*\)", c => c.comic.Name, ApplyRemoveFound);
+            Test(@"\b[0-9]{2,6}\b", c => c.comic.Name, ApplyRemoveFound);
+            Test(@"vol\.[\s*][0-9]+", c => c.comic.Name, ApplyRemoveFound);
+            Test(@"v[0-9]+", c => c.comic.Name, ApplyRemoveFound);            
 
             Cleanup(c => c.comic.Name = c.comic.Name.Trim());
         }
