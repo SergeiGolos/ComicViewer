@@ -16,10 +16,12 @@
             this.resolver = resolver;
         }
 
-        public override bool AlreadyDefined(FileInfo file)
+        public override bool IsReadyForProcessing(FileInfo file)
         {
+            if (file.FullName.Contains("fc only")) { return false; }
+
             var entry = resolver.FindByPath(file.FullName);
-            if (entry == null) return false;
+            if (entry == null) return true;
 
             var reletivePath = entry.Path.Replace(config.ComicRepositoryPath, string.Empty);
             Console.WriteLine("Skip - " + entry.Id + ": " + reletivePath);

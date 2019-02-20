@@ -44,7 +44,8 @@
 
         public string Volume { get; set; }
 
-        public string Issue { get; set; }                
+        public string Issue { get; set; }
+        public string Title { get; internal set; }
 
         #endregion
     }

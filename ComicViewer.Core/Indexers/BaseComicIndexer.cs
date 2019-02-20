@@ -24,9 +24,9 @@
 
         public abstract void Store(ComicBookFile file);
 
-        public virtual bool AlreadyDefined(FileInfo file)
+        public virtual bool IsReadyForProcessing(FileInfo file)
         {
-            return false;
+            return true;
         }
 
         public virtual IComicIndexer Run()
@@ -34,7 +34,7 @@
             var comics = this.extensions
                 .SelectMany(ext => path.GetFiles(ext, SearchOption.AllDirectories))
                 // .AsParallel()
-                .Where(file => !AlreadyDefined(file))
+                .Where(file => IsReadyForProcessing(file))
                 .Select(file => this.factory.LoadFile(file));                
 
             foreach (var comic in comics) { 

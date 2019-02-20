@@ -31,7 +31,8 @@ namespace ComicViewer.Indexer
                            new IssueInterigator(),
                            new DateInterigator(),
                            new PublisherInterigator(),
-                           new NameInterigator()                      
+                           new NameInterigator(),
+                           new TitleInterigator()
                         });
                        var resolver = new StoreComicBookResolver(config, context);
                        Console.WriteLine("Starting Index");

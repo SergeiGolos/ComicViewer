@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
-using SharpCompress.Archives;
+﻿using System.Text.RegularExpressions;
 
 namespace ComicViewer.Core.Interigators
 {
+
     public class NameInterigator : RegExInterigator, IComicInterigator
     {
         public NameInterigator()
@@ -15,11 +13,11 @@ namespace ComicViewer.Core.Interigators
             Test(@"\([\w|\s|\-|\+|\&|\.]*\)", c => c.comic.Name, ApplyRemoveFound);
             Test(@"\b[0-9]{2,6}\b", c => c.comic.Name, ApplyRemoveFound);
             Test(@"vol\.[\s*][0-9]+", c => c.comic.Name, ApplyRemoveFound);
-            Test(@"v[0-9]+", c => c.comic.Name, ApplyRemoveFound);            
+            Test(@"v[0-9]+", c => c.comic.Name, ApplyRemoveFound);
+            Test(@"--+", c => c.comic.Name, ApplyRemoveFound);
 
             Cleanup(c => c.comic.Name = c.comic.Name.Trim());
         }
-
         
         public bool ApplyRemoveFound(ComicBookFile comic, MatchCollection matches)
         {
