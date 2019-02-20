@@ -8,22 +8,22 @@
     public class StoreIndexer : BaseComicIndexer, IComicIndexer
     {
         private readonly ComicViewerConfiguration config;
-        private readonly ComicBookContext context;
+        private readonly IComicBookResolver resolver;
 
-        public StoreIndexer(ComicViewerConfiguration config, IComicBookFactory factory, ComicBookContext context) : base(config, factory)
+        public StoreIndexer(ComicViewerConfiguration config, IComicBookFactory factory, IComicBookResolver resolver) : base(config, factory)
         {
-            this.config = config;
-            this.context = context;
+            this.config = config;            
+            this.resolver = resolver;
         }
 
-        public override bool NotAlreadyDefined(FileInfo file)
+        public override bool AlreadyDefined(FileInfo file)
         {
-            var entry = context.Files.Where(x => x.Path == file.FullName).FirstOrDefault();
-            if (entry == null) return true;
+            var entry = resolver.FindByPath(file.FullName);
+            if (entry == null) return false;
 
             var reletivePath = entry.Path.Replace(config.ComicRepositoryPath, string.Empty);
             Console.WriteLine("Skip - " + entry.Id + ": " + reletivePath);
-            return false;
+            return true;
         }
 
         public override void Store(ComicBookFile file)
@@ -31,8 +31,7 @@
             // TODO validation if this should be saved or updated.
             var reletivePath = file.Path.Replace(config.ComicRepositoryPath, string.Empty);
             Console.WriteLine(file.Id+ ": " + reletivePath);
-            context.Files.Add(file);
-            context.SaveChanges();
+            this.resolver.Store(file);            
         }
     }
 }

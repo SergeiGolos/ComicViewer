@@ -1,6 +1,6 @@
 <form class="search-form">
   <mat-form-field style="width: 650px;">
-    <input matInput placeholder="Search by Name" aria-label="search" [matAutocomplete]="auto" [formControl]="searchCtrl">
+    <input #search matInput placeholder="Search by Name" (focus)="onFocus($event)" aria-label="search" [matAutocomplete]="auto" [formControl]="searchCtrl">
     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
       <mat-option *ngFor="let book of searchEvent | async"
                   [value]="book"

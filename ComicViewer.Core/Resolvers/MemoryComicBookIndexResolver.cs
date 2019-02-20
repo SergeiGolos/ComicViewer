@@ -26,9 +26,19 @@
 
         public IEnumerable<ComicBookFile> FindByName(string search)
         {
-            return this.Files
-                .Where(file => file.Value.Name.IndexOf(search, StringComparison.CurrentCultureIgnoreCase) >= 0)
-                .Select(n => n.Value);
-        }        
+            return this.Files.Values
+                .Where(file => file.Name.IndexOf(search, StringComparison.CurrentCultureIgnoreCase) >= 0);
+        }
+
+        public ComicBookFile FindByPath(string path)
+        {
+            return this.Files.Values
+                .FirstOrDefault(file => file.Path == path);
+        }
+
+        public void Store(ComicBookFile file)
+        {
+            this.Files.Add(file.Id, file);            
+        }
     }
 }

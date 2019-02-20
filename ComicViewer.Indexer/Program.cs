@@ -27,8 +27,9 @@ namespace ComicViewer.Indexer
                            new IdInterigator(),
                            new ImageInterigator(config, imgProcessor)
                         });
-
-                       var indexer = new StoreIndexer(config, factory, context).Run();                       
+                       var resolver = new StoreComicBookResolver(config, context);
+                       Console.WriteLine("Starting Index");
+                       var indexer = new StoreIndexer(config, factory, resolver).Run();                       
                    })
                    .WithNotParsed((errs) => { Console.WriteLine("Could not parse arguments");  });
 

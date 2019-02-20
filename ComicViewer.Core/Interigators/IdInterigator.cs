@@ -10,11 +10,10 @@
     {
         public void Apply(ComicBookFile comic, FileInfo file, IArchive archive, IEnumerable<IArchiveEntry> pages)
         {
-            comic.Id = file.FullName.GetHashCode().ToString("X");
-            comic.Name = file.Name.Remove(file.Name.IndexOf(file.Extension));
+            comic.Id = file.FullName.GetHashCode().ToString("X");            
             comic.Path = file.FullName;
-            comic.Extension = file.Extension;
-            comic.IsSolid = archive.IsSolid;
+            comic.OriginalName = file.Name.Remove(file.Name.IndexOf(file.Extension));
+            comic.Extension = file.Extension;            
             comic.Created = DateTime.Now;
         }
     }

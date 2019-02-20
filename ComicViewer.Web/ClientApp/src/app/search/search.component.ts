@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { filter, debounceTime, switchMap } from 'rxjs/operators';
 })
 export class SearchComponent implements OnInit{      
   @Output() onSelected: EventEmitter<any> = new EventEmitter();
+  @ViewChild('search') input; 
   searchCtrl = new FormControl();
   searchEvent: Observable<Object>;
 
@@ -30,9 +31,11 @@ export class SearchComponent implements OnInit{
     return book ? book.name : undefined;
   }
 
+  onFocus(event) {
+    this.input.nativeElement.select();
+  }
+
   onSearchSelected(event) {
-    this.onSelected.emit(event.source.value);
-    // event.option.deselect();        
+    this.onSelected.emit(event.source.value);    
   }
 }
-

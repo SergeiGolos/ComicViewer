@@ -19,20 +19,27 @@
         }        
 
         public T InArchive<T>(FileInfo file, Func<IArchive, IEnumerable<IArchiveEntry>, T> loaderFn)
-        {        
-            using (var archive = ArchiveFactory.Open(file.FullName))
+        {
+            try
             {
-                var pages = archive.Entries.Where(m =>
+                using (var archive = ArchiveFactory.Open(file.FullName))
                 {
-                    var extensionIndex = m.Key.LastIndexOf(".");
-                    if (extensionIndex == -1) return false;
+                    var pages = archive.Entries.Where(m =>
+                    {
+                        var extensionIndex = m.Key.LastIndexOf(".");
+                        if (extensionIndex == -1) return false;
 
-                    var extension = m.Key.Substring(m.Key.LastIndexOf(".")).ToLower();
+                        var extension = m.Key.Substring(m.Key.LastIndexOf(".")).ToLower();
 
-                    return imageExtentions.Contains(extension);
-                }).OrderBy(m => m.Key);
+                        return imageExtentions.Contains(extension);
+                    }).OrderBy(m => m.Key);
 
-                return loaderFn(archive, pages);
+                    return loaderFn(archive, pages);
+                }
+            }
+            catch (Exception ex)
+            {
+                return default(T);
             }
         }
 

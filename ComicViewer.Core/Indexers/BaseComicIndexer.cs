@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
     using ComicViewer.Core.Configuration;
 
     public abstract class BaseComicIndexer : IComicIndexer
@@ -23,24 +24,25 @@
 
         public abstract void Store(ComicBookFile file);
 
-        public virtual bool NotAlreadyDefined(FileInfo file)
+        public virtual bool AlreadyDefined(FileInfo file)
         {
-            return true;
+            return false;
         }
 
         public virtual IComicIndexer Run()
         {
             var comics = this.extensions
                 .SelectMany(ext => path.GetFiles(ext, SearchOption.AllDirectories))
-                .Where(NotAlreadyDefined)
-                .Select(file => this.factory.LoadFile(file))
-                .Where(file => file != null);
+                // .AsParallel()
+                .Where(file => !AlreadyDefined(file))
+                .Select(file => this.factory.LoadFile(file));                
 
-            foreach (var comic in comics)
-            {
-                this.Store(comic);
+            foreach (var comic in comics) { 
+                if (comic == null) { continue; }
+
+                this.Store(comic);                
             }
-
+            
             return this;
         }
     }
