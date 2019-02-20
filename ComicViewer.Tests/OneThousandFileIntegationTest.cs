@@ -45,5 +45,17 @@ namespace ComicViewer.Tests
             Assert.DoesNotContain(comics, n => string.IsNullOrEmpty(n.Volume));
             
         }
+
+        [Fact]
+        public void OneThousandFileIntegationTest_Name()
+        {
+            var comics = SampleNameFile.Load(new IComicInterigator[] {
+                new IdInterigator(),
+                new NameInterigator()
+            });
+            var list = comics.Select(n => n.Name);
+            Assert.DoesNotContain(comics, n => string.IsNullOrEmpty(n.Name));
+
+        }
     }
 }

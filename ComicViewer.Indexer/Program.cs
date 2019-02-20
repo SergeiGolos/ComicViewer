@@ -1,6 +1,7 @@
 ﻿using ComicViewer.Core;
 using ComicViewer.Core.Configuration;
 using ComicViewer.Core.Indexers;
+using ComicViewer.Core.Interigators;
 using CommandLine;
 using System;
 
@@ -25,7 +26,12 @@ namespace ComicViewer.Indexer
                        var imgProcessor = new ImageSharpProcessor();
                        var factory = new ComicBookFactory(imgProcessor, new IComicInterigator[] {
                            new IdInterigator(),
-                           new ImageInterigator(config, imgProcessor)
+                           // new ImageInterigator(config, imgProcessor),
+                           new VolumeInterigator(),
+                           new IssueInterigator(),
+                           new DateInterigator(),
+                           new PublisherInterigator(),
+                           new NameInterigator()                      
                         });
                        var resolver = new StoreComicBookResolver(config, context);
                        Console.WriteLine("Starting Index");

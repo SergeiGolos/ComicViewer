@@ -11,7 +11,7 @@ namespace ComicViewer.Core.Interigators
     {
         public IssueInterigator()
         {
-            Test("\b[0-9]{2,3}\b", c => c.comic.OriginalName, ApplyIssue);
+            Test(@"\b[0-9]{2,3}\b", c => c.comic.OriginalName, ApplyIssue);
         }        
         
         public bool ApplyIssue(ComicBookFile comic, MatchCollection matches)

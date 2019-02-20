@@ -10,8 +10,8 @@ namespace ComicViewer.Core.Interigators
     {
         public DateInterigator()
         {
-            Test("\b[0-9]{6}\b", c => c.comic.OriginalName, ApplyYearAndMonth);
-            Test("\b[0-9]{4}\b", c => c.comic.OriginalName, ApplyYear);
+            Test("@\b[0-9]{6}\b", c => c.comic.OriginalName, ApplyYearAndMonth);
+            Test("@\b[0-9]{4}\b", c => c.comic.OriginalName, ApplyYear);
         }
         public bool ApplyYearAndMonth(ComicBookFile comic, MatchCollection matches)
         {

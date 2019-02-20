@@ -19,11 +19,25 @@ namespace ComicViewer.Core.Interigators
 
         private readonly Dictionary<string, Func<RegExInterigatorContext, string>> resolvers;
         private readonly Dictionary<string, Func<ComicBookFile, MatchCollection, bool>> binders;
+        private readonly List<Action<RegExInterigatorContext>> setup;
+        private readonly List<Action<RegExInterigatorContext>> cleanup;
 
         public RegExInterigator()
         {
             this.resolvers= new Dictionary<string, Func<RegExInterigatorContext, string>>();
             this.binders = new Dictionary<string, Func<ComicBookFile, MatchCollection, bool>>();
+            this.setup = new List< Action<RegExInterigatorContext>>();
+            this.cleanup = new List<Action<RegExInterigatorContext>>();
+        }
+
+        protected void SetUp(Action<RegExInterigatorContext> binder)
+        {
+            this.setup.Add(binder);
+        }
+
+        protected void Cleanup(Action<RegExInterigatorContext> binder)
+        {
+            this.cleanup.Add(binder);
         }
 
         protected void Test(string regEx, Func<RegExInterigatorContext, string> resolver, Func<ComicBookFile, MatchCollection, bool> binder)
@@ -41,6 +55,12 @@ namespace ComicViewer.Core.Interigators
                 archive = archive,
                 pages = pages
             };            
+
+            foreach(var binder in setup)
+            {
+                binder(context);
+            }
+
             foreach (var expression in resolvers)
             {
                 var test = new Regex(expression.Key);
@@ -51,7 +71,12 @@ namespace ComicViewer.Core.Interigators
                 {
                     break;
                 }
-            }            
+            }
+
+            foreach (var binder in cleanup)
+            {
+                binder(context);
+            }
         }
 
         public virtual bool Apply(ComicBookFile comic, string test, MatchCollection matches)
@@ -60,6 +85,7 @@ namespace ComicViewer.Core.Interigators
             {
                 return this.binders[test](comic, matches);
             }
+
             return true;
         }
     }
