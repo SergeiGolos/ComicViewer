@@ -4,36 +4,25 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-
     using SharpCompress.Archives;
-
     public class ComicBookFactory : IComicBookFactory
     {
-        private readonly IEnumerable<IComicInterigator> interigators;
-        private readonly IImageProcessor processor;
-        private string[] imageExtentions = new[] { ".jpg", ".png", ".jpeg" };
+        protected readonly IEnumerable<IComicInterigator> interigators;
+        protected readonly IImageProcessor processor;
+        protected string[] imageExtentions = new[] { ".jpg", ".png", ".jpeg" };
 
         public ComicBookFactory(IImageProcessor processor, IEnumerable<IComicInterigator> interigators) {
             this.interigators = interigators;
             this.processor = processor;
         }        
 
-        public T InArchive<T>(FileInfo file, Func<IArchive, IEnumerable<IArchiveEntry>, T> loaderFn)
+        public virtual T InArchive<T>(FileInfo file, Func<IArchive, IEnumerable<IArchiveEntry>, T> loaderFn)
         {
             try
             {
                 using (var archive = ArchiveFactory.Open(file.FullName))
                 {
-                    var pages = archive.Entries.Where(m =>
-                    {
-                        var extensionIndex = m.Key.LastIndexOf(".");
-                        if (extensionIndex == -1) return false;
-
-                        var extension = m.Key.Substring(m.Key.LastIndexOf(".")).ToLower();
-
-                        return imageExtentions.Contains(extension);
-                    }).OrderBy(m => m.Key);
-
+                    var pages = LoadPages(archive);
                     return loaderFn(archive, pages);
                 }
             }
@@ -43,7 +32,7 @@
             }
         }
 
-        public ComicBookFile LoadFile(FileInfo file)
+        public virtual ComicBookFile LoadFile(FileInfo file)
         {
             return InArchive(file, (archive, pages) => {
                 ComicBookFile comic = null;
@@ -62,7 +51,7 @@
             });            
         } 
         
-        public MemoryStream LoadPage(FileInfo file, int pageIndex)
+        public virtual MemoryStream LoadPage(FileInfo file, int pageIndex)
         {            
             return InArchive(file, (archive, pages) =>
             {
@@ -77,7 +66,7 @@
             });
         }
 
-        public MemoryStream LoadPage(FileInfo file, int pageIndex, int? height, int? width)
+        public virtual MemoryStream LoadPage(FileInfo file, int pageIndex, int? height, int? width)
         {
             var image = LoadPage(file, pageIndex);
             if (!height.HasValue && !width.HasValue)
@@ -88,6 +77,19 @@
             using (image)
                 return this.processor.Resize(image, height.Value, width.Value);
 
+        }
+
+        protected IEnumerable<IArchiveEntry> LoadPages(IArchive arch)
+        {
+            return arch.Entries.Where(m =>
+            {
+                var extensionIndex = m.Key.LastIndexOf(".");
+                if (extensionIndex == -1) return false;
+
+                var extension = m.Key.Substring(m.Key.LastIndexOf(".")).ToLower();
+
+                return imageExtentions.Contains(extension);
+            }).OrderBy(m => m.Key);
         }
     }
 }

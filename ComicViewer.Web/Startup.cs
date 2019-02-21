@@ -13,6 +13,7 @@ namespace ComicViewer.Web
     using ComicViewer.Core;
     using ComicViewer.Core.Configuration;
     using ComicViewer.Core.Indexers;
+    using Microsoft.Extensions.Caching.Memory;
 
     public static class AppConfiguration
 	{
@@ -40,18 +41,21 @@ namespace ComicViewer.Web
             var connectionString = Configuration.GetSection("ConnectionString").ToString();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-			services.AddSpaStaticFiles(configuration =>
+            services.AddMemoryCache();
+            services.AddSpaStaticFiles(configuration =>
 			{
 				configuration.RootPath = "ClientApp/dist";
 			});
-
+                
             services.AddSingleton(config);
             services.AddDbContext<ComicBookContext>(options => 
                     options.UseSqlite(connectionString, builder => 
                             builder.MigrationsAssembly(typeof(Startup).Assembly.FullName)));
             
 			services.AddTransient<IImageProcessor, ImageSharpProcessor>();
-			services.AddTransient<IComicBookFactory, ComicBookFactory>();
+
+            //services.AddTransient<IComicBookFactory, ComicBookFactory>();            
+            services.AddTransient<IComicBookFactory, CacheComcicBookFactory>();
 
             if (string.IsNullOrEmpty(config.DatabasePath))
             {

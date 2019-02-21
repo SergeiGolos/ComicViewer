@@ -8,9 +8,9 @@
     public class StoreComicBookResolver : IComicBookResolver
     {
         private readonly ComicViewerConfiguration config;
-        private readonly IComicBookContext context;
+        private readonly ComicBookContext context;
 
-        public StoreComicBookResolver(ComicViewerConfiguration config, IComicBookContext context)
+        public StoreComicBookResolver(ComicViewerConfiguration config, ComicBookContext context)
         {
             this.config = config;
             this.context = context;
