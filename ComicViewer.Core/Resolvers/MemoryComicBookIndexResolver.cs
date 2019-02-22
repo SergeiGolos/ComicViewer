@@ -36,6 +36,21 @@
                 .FirstOrDefault(file => file.Path == path);
         }
 
+        public IEnumerable<ComicBookFile> FindByPublisher(string publisher)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ComicBookFile> FindPublishers()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ComicBookFile> Search(string[] terms)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Store(ComicBookFile file)
         {
             this.Files.Add(file.Id, file);            

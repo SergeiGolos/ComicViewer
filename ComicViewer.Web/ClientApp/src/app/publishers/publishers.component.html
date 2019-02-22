@@ -1,0 +1,19 @@
+<mat-grid-list cols="3" gutterSize="20">
+  <mat-grid-tile *ngFor="let page of publishersObserver | async">
+    <mat-card width="100%">
+      <mat-card-header>
+        <!--<div mat-card-avatar class="example-header-image"></div>-->
+        <mat-card-title>{{page.name}}</mat-card-title>
+        <mat-card-subtitle>{{page.title}} ( {{page.volume}} {{page.issue}} )</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <a href="/comic/{{page.id}}">
+          <img mat-card-image height="200" [src]="page.thumbnail | base64image" />
+        </a>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button (click)="onClickPublish(page.publisher)">Go to {{page.publisher}}</button>        
+      </mat-card-actions>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

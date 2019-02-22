@@ -24,7 +24,7 @@
             if (entry == null) return true;
 
             var reletivePath = entry.Path.Replace(config.ComicRepositoryPath, string.Empty);
-            Console.WriteLine("Skip - " + entry.Id + ": " + reletivePath);
+            Console.WriteLine("(" + PrecentDone() + ") " + entry.Id + ": " + "Skip - " + reletivePath);
             return true;
         }
 
@@ -32,7 +32,7 @@
         {
             // TODO validation if this should be saved or updated.
             var reletivePath = file.Path.Replace(config.ComicRepositoryPath, string.Empty);
-            Console.WriteLine(file.Id+ ": " + reletivePath);
+            Console.WriteLine("(" + PrecentDone() + ") " + file.Id+ ": " + reletivePath);
             this.resolver.Store(file);            
         }
     }

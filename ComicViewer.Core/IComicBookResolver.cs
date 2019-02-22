@@ -4,9 +4,13 @@
 
     public interface IComicBookResolver
     {
-        IEnumerable<ComicBookFile> FindByName(string search);
+        IEnumerable<ComicBookFile> Search(string[] terms);
+        IEnumerable<ComicBookFile> FindPublishers();
+        IEnumerable<ComicBookFile> FindByName(string name);
+        IEnumerable<ComicBookFile> FindByPublisher(string publisher);
         ComicBookFile FindById(string id);
         ComicBookFile FindByPath(string path);
+        
         void Store(ComicBookFile file);
     }
 }

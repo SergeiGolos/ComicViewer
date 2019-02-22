@@ -42,21 +42,21 @@
             }
         }
 
-        public override MemoryStream LoadPage(FileInfo file, int pageIndex)
-        {
-            return cache.GetOrCreate(string.Format("{0}:{1}", file.FullName, pageIndex), entry =>
-            {
-                entry.SlidingExpiration = TimeSpan.FromSeconds(15);
-                entry.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration()
-                {
-                    EvictionCallback = (key, value, reason, state) =>
-                    {                         
-                        (value as MemoryStream).Dispose();
-                    }
-                });
+        //public override MemoryStream LoadPage(FileInfo file, int pageIndex)
+        //{
+        //    return cache.GetOrCreate(string.Format("{0}:{1}", file.FullName, pageIndex), entry =>
+        //    {
+        //        entry.SlidingExpiration = TimeSpan.FromSeconds(15);
+        //        entry.PostEvictionCallbacks.Add(new PostEvictionCallbackRegistration()
+        //        {
+        //            EvictionCallback = (key, value, reason, state) =>
+        //            {                         
+        //                (value as MemoryStream).Dispose();
+        //            }
+        //        });
 
-                return base.LoadPage(file, pageIndex);
-            });
-        }
+        //        return base.LoadPage(file, pageIndex);
+        //    });
+        //}
     }
 }

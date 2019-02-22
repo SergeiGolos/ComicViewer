@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageViewComponent } from './page-view.component';
+import { PublisherComponent } from './publisher.component';
 
-describe('PageViewComponent', () => {
-  let component: PageViewComponent;
-  let fixture: ComponentFixture<PageViewComponent>;
+describe('PublisherComponent', () => {
+  let component: PublisherComponent;
+  let fixture: ComponentFixture<PublisherComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageViewComponent ]
+      declarations: [ PublisherComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageViewComponent);
+    fixture = TestBed.createComponent(PublisherComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

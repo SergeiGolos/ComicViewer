@@ -23,12 +23,12 @@ export class SearchComponent implements OnInit{
       .pipe(
         filter(n => n.length > 2),
         debounceTime(300),
-        switchMap(n => http.get("/api/Comic/Find/" + n))
+        switchMap(n => http.get(`/api/Comic/Find/${n}?skip=0&take=20`))
       );
   }
 
   displayFn(book): string | undefined {
-    return book ? book.name : undefined;
+    return book ? [book.name, book.title, book.volume, book.issue].join(" ") : undefined;
   }
 
   onFocus(event) {

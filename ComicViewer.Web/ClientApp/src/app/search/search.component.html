@@ -7,8 +7,8 @@
                   (onSelectionChange)="onSearchSelected($event)"
                   style="height:80px !important;">
         <img class="comic-thumb" [src]="book.thumbnail | base64image" height="80">
-        <span>{{book.name}}</span> |
-        <small>Length: {{book.length}}</small>
+        <span>{{book.name}} {{book.title}}</span> |
+        <small>{{book.volume}} {{book.issue}}</small>
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
