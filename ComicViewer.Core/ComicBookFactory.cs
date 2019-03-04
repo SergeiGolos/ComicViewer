@@ -46,7 +46,10 @@
                         interigator.Apply(comic, file, archive, pages);
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
                 return comic;
             });            
         } 
@@ -77,6 +80,11 @@
             using (image)
                 return this.processor.Resize(image, height.Value, width.Value);
 
+        }
+
+        public MemoryStream LoadThumb(FileInfo fileInfo, int pageNumber, string size)
+        {
+            throw new NotImplementedException();
         }
 
         protected IEnumerable<IArchiveEntry> LoadPages(IArchive arch)

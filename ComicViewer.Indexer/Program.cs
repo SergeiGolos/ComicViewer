@@ -19,14 +19,17 @@ namespace ComicViewer.Indexer
                        {
                             ComicRepositoryPath = o.IndexPath,
                             DatabasePath = o.Database,
-                            ThumbnailHeight = o.Height,
-                            ThumbnailWidth = o.Width
+                            ThumbnailHeight = new System.Collections.Generic.Dictionary<string, int>
+                            {
+                                {"small", 80 },
+                                { "large", 300 }
+                            }  
                        };
                        var context = new ComicBookContext(config, new Microsoft.EntityFrameworkCore.DbContextOptions<ComicBookContext>());
-                       var imgProcessor = new ImageSharpProcessor();
+                       var imgProcessor = new ImageSharpProcessor(config);
                        var factory = new ComicBookFactory(imgProcessor, new IComicInterigator[] {
                            new IdInterigator(),
-                           new ImageInterigator(config, imgProcessor),
+                           new ImageInterigator(config, context, imgProcessor),
                            new VolumeInterigator(),
                            new IssueInterigator(),
                            new DateInterigator(),

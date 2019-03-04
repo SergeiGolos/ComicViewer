@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform, ElementRef } from '@angular/core';
 import { ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import { SafeHtml, DomSanitizer } from '@angular/platform-browser';
 import { Location } from '@angular/common';
@@ -13,9 +13,11 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private location: Location, private router: Router) {}
+  constructor(private location: Location, private router: Router, private element: ElementRef) {}
   ngOnInit(): void {
-       //  throw new Error("Method not implemented.");
+    this.element.nativeElement.classList.add('page-content');
+
+    //  throw new Error("Method not implemented.");
   }
 
   onSelected($event: any) {    
@@ -37,7 +39,7 @@ export class Base64ImagePipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) { }
 
   transform(value: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64, ' + value);
+    return this.sanitizer.bypassSecurityTrustUrl('data:image/jpg;base64,' + value);
   }
 }
 

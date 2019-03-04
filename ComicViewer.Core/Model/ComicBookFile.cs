@@ -1,7 +1,7 @@
 ﻿namespace ComicViewer.Core
 {
     using System;
-    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations;    
 
     public class ComicBookFile
 	{
@@ -10,27 +10,17 @@
 
         public DateTime Created { get; set; }
 
-        #region Source Data        
-
+        #region Source Data    
+        
         public string OriginalName { get; set; }
 
         public string Path { get; set; }
 
         public string Extension { get; set; }
 
-        #endregion
-
-        #region Page Information 
-
-        public byte[] Thumbnail { get; set; }
-
         public int Length { get; set; }
 
-        public int Height { get; set; }
-
-        public int Width { get; set; }
-
-        #endregion
+        #endregion        
 
         #region Parsed Metadata
 
@@ -45,8 +35,9 @@
         public string Volume { get; set; }
 
         public string Issue { get; set; }
-        public string Title { get; internal set; }
 
-        #endregion
+        public string Title { get; internal set; }        
+
+        #endregion 
     }
 }

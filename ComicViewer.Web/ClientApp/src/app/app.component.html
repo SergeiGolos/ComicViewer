@@ -1,6 +1,8 @@
-<mat-toolbar color="primary">  
-  <span class="title-text" style=" flex: 1 1 auto;"><a href="/">CBR</a></span>
+<nav class="nav-header mat-elevation-z6">
+  <mat-toolbar color="primary">
+    <span class="title-text"><a href="/">CBR</a></span>
 
-  <app-search class="search-bar" (onSelected)="onSelected($event)"></app-search>  
-</mat-toolbar>
+    <app-search class="search-bar" (onSelected)="onSelected($event)"></app-search>
+  </mat-toolbar>
+</nav>
 <router-outlet></router-outlet>

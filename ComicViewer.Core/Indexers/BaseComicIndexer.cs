@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Timers;
     using ComicViewer.Core.Configuration;
 
     public abstract class BaseComicIndexer : IComicIndexer
@@ -39,22 +40,48 @@
         public virtual IComicIndexer Run()
         {
             var comicsFiles = this.extensions
-                .SelectMany(ext => path.GetFiles(ext, SearchOption.AllDirectories));
+                .SelectMany(ext => path.GetFiles(ext, SearchOption.AllDirectories))
+                .OrderBy(file => file.FullName);
             this.TotalFiles = comicsFiles.Count();
             this.CurrentFile = 0;
 
-            var comics = comicsFiles                
+            var files = comicsFiles
                 .Do(file => this.CurrentFile++)
-                .Where(file => IsReadyForProcessing(file))
-                .Select(file => this.factory.LoadFile(file));                
+                .Where(file => IsReadyForProcessing(file));
 
-            foreach (var comic in comics) {                
-                if (comic == null) { continue; }
+            foreach (var file in files)
+            {
+                Timed(file.FullName, () =>
+                {
+                    var comic = this.factory.LoadFile(file);
+                    if (comic == null) { return; }
 
-                this.Store(comic);                
+                    this.Store(comic);
+                });
             }
             
             return this;
+        }
+
+        protected void Timed(string name, Action runner)
+        {
+            var timer = new Timer();
+
+            Console.WriteLine("Starting: {0}", name);
+            timer.Start();
+
+            runner();
+
+            timer.Stop();
+            Console.WriteLine("Completed in {0}", timer.Interval.ToString());
+        }
+
+        protected void WriteLog(ComicBookFile file, string action)
+        {
+            var reletivePath = file.Path.Replace(config.ComicRepositoryPath, string.Empty);
+
+            action = string.IsNullOrEmpty(action) ? "" : $" - ({action})";
+            Console.WriteLine($"({PrecentDone()}) {file.Id} : {reletivePath}{action}");
         }
     }
 

@@ -5,6 +5,7 @@
     using System.Linq;
 
     using ComicViewer.Core.Indexers;
+    using ComicViewer.Core.Model;
 
     public class MemoryComicBookResolver : IComicBookResolver
     {
@@ -37,6 +38,11 @@
         }
 
         public IEnumerable<ComicBookFile> FindByPublisher(string publisher)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ComicPageFile> FindPagesById(string id)
         {
             throw new NotImplementedException();
         }

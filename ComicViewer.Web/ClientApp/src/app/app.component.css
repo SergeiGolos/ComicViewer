@@ -1,3 +1,20 @@
+.title-text {
+  flex: 1 1 auto;
+  font-size: 1.4em;
+}
+
+  .title-text a {
+    color: white !important;
+  }
+
+.nav-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
 @media (max-width: 767px) {
   /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
   .body-content {

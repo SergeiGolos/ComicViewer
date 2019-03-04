@@ -21,18 +21,16 @@
             if (file.FullName.Contains("fc only")) { return false; }
 
             var entry = resolver.FindByPath(file.FullName);
-            if (entry == null) return true;
-
-            var reletivePath = entry.Path.Replace(config.ComicRepositoryPath, string.Empty);
-            Console.WriteLine("(" + PrecentDone() + ") " + entry.Id + ": " + "Skip - " + reletivePath);
+            if (entry != null)
+            {
+                WriteLog(entry, "Skip");
+                return false;
+            }
             return true;
         }
 
         public override void Store(ComicBookFile file)
-        {
-            // TODO validation if this should be saved or updated.
-            var reletivePath = file.Path.Replace(config.ComicRepositoryPath, string.Empty);
-            Console.WriteLine("(" + PrecentDone() + ") " + file.Id+ ": " + reletivePath);
+        {                        
             this.resolver.Store(file);            
         }
     }

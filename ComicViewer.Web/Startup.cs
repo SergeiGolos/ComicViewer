@@ -12,8 +12,8 @@ namespace ComicViewer.Web
 
     using ComicViewer.Core;
     using ComicViewer.Core.Configuration;
-    using ComicViewer.Core.Indexers;
-    using Microsoft.Extensions.Caching.Memory;
+    using ComicViewer.Core.Indexers;    
+    using ComicViewer.Web.Injection;
 
     public static class AppConfiguration
 	{
@@ -36,40 +36,15 @@ namespace ComicViewer.Web
 
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
-		{
-            var config = Configuration.Load<ComicViewerConfiguration>("ComicViewer");
-            var connectionString = Configuration.GetSection("ConnectionString").ToString();
-
+		{            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddMemoryCache();
             services.AddSpaStaticFiles(configuration =>
 			{
 				configuration.RootPath = "ClientApp/dist";
 			});
-                
-            services.AddSingleton(config);
-            services.AddDbContext<ComicBookContext>(options => 
-                    options.UseSqlite(connectionString, builder => 
-                            builder.MigrationsAssembly(typeof(Startup).Assembly.FullName)));
-            
-			services.AddTransient<IImageProcessor, ImageSharpProcessor>();
 
-            //services.AddTransient<IComicBookFactory, ComicBookFactory>();            
-            services.AddTransient<IComicBookFactory, CacheComcicBookFactory>();
-
-            if (string.IsNullOrEmpty(config.DatabasePath))
-            {
-                services.AddSingleton(p =>
-                {
-                    var factory = p.GetService<IComicBookFactory>();
-                    return new InMemoryIndexer(config, factory).Run() as InMemoryIndexer;
-                });
-                services.AddTransient<IComicBookResolver, MemoryComicBookResolver>();
-            }
-            else
-            {                
-                services.AddTransient<IComicBookResolver, StoreComicBookResolver>();
-            }
+            services.Install(Configuration);            
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

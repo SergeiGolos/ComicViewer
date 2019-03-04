@@ -5,6 +5,7 @@
     using System.Linq;
 
     using ComicViewer.Core.Configuration;
+    using ComicViewer.Core.Model;
     using Microsoft.EntityFrameworkCore;
 
     public class StoreComicBookResolver : IComicBookResolver
@@ -25,7 +26,7 @@
 
         public IEnumerable<ComicBookFile> FindByName(string search)
         {
-            return this.context.WithFiles(files => files.Where(n => n.Name.ToUpper().Contains(search.ToUpper())));
+            return this.context.WithFiles(files => files.FromSql("select * from search_files Where originalname match @p0", new [] { search }));
         }        
 
         public ComicBookFile FindByPath(string path)
@@ -36,6 +37,11 @@
         public IEnumerable<ComicBookFile> FindByPublisher(string publisher)
         {
             return this.context.WithFiles(files => files.Where(n => n.Publisher == publisher));
+        }
+
+        public IEnumerable<ComicPageFile> FindPagesById(string id)
+        {
+            return this.context.Pages.Where(n => n.ComicId == id).OrderBy(n=>n.Page);
         }
 
         public IEnumerable<ComicBookFile> FindPublishers()

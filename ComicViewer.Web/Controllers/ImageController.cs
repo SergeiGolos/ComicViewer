@@ -33,5 +33,15 @@ namespace ComicViewer.Web.Controllers
             }
             return File(image, "image/jpeg"); //TODO: get 
         }
+
+        [HttpGet("thumb/{id}/{pageNumber}")]
+        public IActionResult GetThumb(string id, int pageNumber, [FromQuery(Name = "size")] string size = "small")
+        {
+            var book = this.indexResolver.FindById(id);
+            if (book == null) return null;
+            var image = factory.LoadThumb(new FileInfo(book.Path), pageNumber, size);
+            if (image == null) { return new StatusCodeResult(404); }
+            return File(image, "image/jpeg"); //TODO: get 
+        }
     }
 }
